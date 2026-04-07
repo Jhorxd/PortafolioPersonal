@@ -1,0 +1,15 @@
+services:
+  app:
+    image: node:20-alpine
+    container_name: portafolio-app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      # Ignoramos la carpeta node_modules del local para usar la del contendor si es necesario, 
+      # aunque en dev solemos requerir la misma. Se deja un volumen anónimo.
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev"

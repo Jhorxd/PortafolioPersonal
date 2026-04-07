@@ -5,9 +5,6 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
-      # Ignoramos la carpeta node_modules del local para usar la del contendor si es necesario, 
-      # aunque en dev solemos requerir la misma. Se deja un volumen anónimo.
-      - /app/node_modules
     ports:
       - "3000:3000"
     environment:

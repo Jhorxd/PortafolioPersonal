@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CustomCursor } from "@/components/CustomCursor";
 import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+const jbMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jb-mono" });
 
 export const metadata: Metadata = {
-  title: "Portafolio Personal",
-  description: "Portafolio creado con Next.js y Tailwind CSS",
+  title: "Jhordan Rojas | Ingeniero de Sistemas",
+  description: "Portafolio profesional de Jhordan Roly Rojas Alfaro - Full Stack Developer",
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${geistMono.variable} font-sans antialiased bg-[#0a0a0a] text-white selection:bg-primary/30 selection:text-white`}
+        className={`${inter.variable} ${jbMono.variable} font-sans antialiased bg-[#0a0a0a] text-white selection:bg-primary/30 selection:text-white`}
       >
         <CustomCursor />
         <Navbar />

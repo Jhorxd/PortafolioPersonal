@@ -8,6 +8,8 @@ import { GithubIcon } from "@/components/Icons";
 function ProjectCard({ project }: { project: typeof SITE_DATA.projects[0] }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
@@ -19,18 +21,27 @@ function ProjectCard({ project }: { project: typeof SITE_DATA.projects[0] }) {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
+    const mX = e.clientX - rect.left;
+    const mY = e.clientY - rect.top;
+    
+    const xPct = mX / width - 0.5;
+    const yPct = mY / height - 0.5;
+    
     x.set(xPct);
     y.set(yPct);
+    mouseX.set(mX);
+    mouseY.set(mY);
   };
 
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
   };
+
+  const glowBackground = useTransform(
+    [mouseX, mouseY],
+    ([currX, currY]) => `radial-gradient(400px circle at ${currX}px ${currY}px, rgba(139, 92, 246, 0.15), transparent 80%)`
+  );
 
   return (
     <motion.div
@@ -40,43 +51,44 @@ function ProjectCard({ project }: { project: typeof SITE_DATA.projects[0] }) {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      className="relative group rounded-3xl bg-white/5 border border-white/10 overflow-hidden"
+      className="relative group rounded-3xl bg-white/[0.03] border border-white/10 overflow-hidden backdrop-blur-md"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Dynamic Glow Overlay */}
+      <motion.div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: glowBackground }}
+      />
       
       <div 
         style={{ transform: "translateZ(50px)" }}
-        className="relative h-64 overflow-hidden border-b border-white/10"
+        className="relative h-64 overflow-hidden border-b border-white/10 z-10"
       >
-        {/* Placeholder if no real img */}
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <span className="text-sm font-mono text-white/50">{project.title} Image</span>
-        </div>
         <img 
           src={project.image} 
           alt={project.title} 
-          className="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105" 
+          className="object-cover w-full h-full opacity-50 group-hover:opacity-80 transition-all duration-700 group-hover:scale-110" 
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
 
-      <div style={{ transform: "translateZ(30px)" }} className="p-6 relative z-10 bg-background/80 backdrop-blur-sm h-full">
-        <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-        <p className="text-gray-400 mb-6 text-sm line-clamp-3">{project.description}</p>
+      <div style={{ transform: "translateZ(30px)" }} className="p-8 relative z-20 h-full">
+        <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
+        <p className="text-gray-400 mb-8 text-sm leading-relaxed">{project.description}</p>
         
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-8">
           {project.tech.map((t, i) => (
-            <span key={i} className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/80 font-mono">
+            <span key={i} className="text-[10px] uppercase tracking-widest px-3 py-1 rounded-md bg-white/5 border border-white/5 text-white/60 font-bold">
               {t}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center gap-4 border-t border-white/10 pt-4 mt-auto">
-          <a href={project.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+        <div className="flex items-center gap-6 border-t border-white/5 pt-6 mt-auto">
+          <a href={project.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors">
             <GithubIcon width={18} height={18} /> Código
           </a>
-          <a href={project.demo} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm hover:text-secondary transition-colors">
-            <ExternalLink size={18} /> Demo
+          <a href={project.demo} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors">
+            <ExternalLink size={18} /> Live Demo
           </a>
         </div>
       </div>

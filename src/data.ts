@@ -5,6 +5,7 @@ export const SITE_DATA = {
   location: "Perú, Lima",
   email: "jhordanroly22@gmail.com",
   phone: "+51 936 427 929",
+  formspreeId: "mnpkeror", // Reemplaza esto con tu ID de Formspree
   description: "Especializado en sistemas ERP, despliegue con Docker y desarrollo con Laravel, PHP y Vue.js. Enfocado en optimizar procesos y continuidad operativa.",
   about: "Ingeniero de Sistemas colegiado con sólida experiencia en soporte TI nivel N3 y desarrollo de software ERP. Especialista en diagnóstico de incidencias, arquitectura multitenant y facturación electrónica (SUNAT). Apasionado por la automatización de procesos y la gestión eficiente de infraestructura técnica.",
   socials: {

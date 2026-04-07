@@ -4,21 +4,15 @@ import { useEffect, useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 
 export const CustomCursor = () => {
-  // useMotionValue actualiza el DOM directamente y se salta el ciclo de renderizado de React
-  // esto elimina cualquier tipo de delay.
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const dotX = useMotionValue(-100);
-  const dotY = useMotionValue(-100);
 
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-      dotX.set(e.clientX - 4);
-      dotY.set(e.clientY - 4);
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -35,26 +29,39 @@ export const CustomCursor = () => {
       }
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
+    window.addEventListener("mousemove", updateMousePosition, { passive: true });
     window.addEventListener("mouseover", handleMouseOver);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [cursorX, cursorY, dotX, dotY]);
+  }, [cursorX, cursorY]);
 
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-primary pointer-events-none z-[9999] mix-blend-difference"
-        style={{ x: cursorX, y: cursorY }}
-        animate={{ scale: isHovering ? 1.5 : 1 }}
-        transition={{ scale: { type: "spring", stiffness: 300, damping: 20 } }}
+        className="fixed top-0 left-0 w-6 h-6 rounded-full border-2 border-primary pointer-events-none z-[9999] bg-transparent"
+        style={{ 
+          x: cursorX, 
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%"
+        }}
+        animate={{ 
+          scale: isHovering ? 1.5 : 1,
+          borderColor: isHovering ? "var(--color-secondary, #06b6d4)" : "var(--color-primary, #8b5cf6)"
+        }}
+        transition={{ duration: 0.1 }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-secondary pointer-events-none z-[10000]"
-        style={{ x: dotX, y: dotY }}
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-secondary pointer-events-none z-[10000]"
+        style={{ 
+          x: cursorX, 
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%"
+        }}
       />
     </>
   );

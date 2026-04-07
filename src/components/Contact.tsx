@@ -30,7 +30,7 @@ export const Contact = () => {
             <a href={SITE_DATA.socials.twitter} className="p-4 rounded-xl bg-white/5 hover:bg-[#1DA1F2] hover:text-white transition-all">
               <TwitterIcon />
             </a>
-            <a href="mailto:hola@ejemplo.com" className="p-4 rounded-xl bg-white/5 hover:bg-secondary hover:text-white transition-all">
+            <a href={`mailto:${SITE_DATA.email}`} className="p-4 rounded-xl bg-white/5 hover:bg-secondary hover:text-white transition-all">
               <Mail />
             </a>
           </div>

@@ -40,8 +40,19 @@ export const CustomCursor = () => {
 
   return (
     <>
+      {/* Outer Glow */}
       <motion.div
-        className="fixed top-0 left-0 w-6 h-6 rounded-full border-2 border-primary pointer-events-none z-[9999] bg-transparent"
+        className="fixed top-0 left-0 w-32 h-32 rounded-full bg-primary/20 blur-3xl pointer-events-none z-[9998] mix-blend-screen"
+        style={{ 
+          x: cursorX, 
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%"
+        }}
+      />
+      {/* Ring Cursor */}
+      <motion.div
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/50 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center"
         style={{ 
           x: cursorX, 
           y: cursorY,
@@ -49,19 +60,29 @@ export const CustomCursor = () => {
           translateY: "-50%"
         }}
         animate={{ 
-          scale: isHovering ? 1.5 : 1,
-          borderColor: isHovering ? "var(--color-secondary, #06b6d4)" : "var(--color-primary, #8b5cf6)"
+          scale: isHovering ? 2.5 : 1,
+          backgroundColor: isHovering ? "rgba(255, 255, 255, 1)" : "transparent"
         }}
-        transition={{ duration: 0.1 }}
-      />
+        transition={{ type: "spring", stiffness: 250, damping: 20 }}
+      >
+        {isHovering && (
+          <motion.div 
+             initial={{ scale: 0 }}
+             animate={{ scale: 1 }}
+             className="w-1 h-1 bg-black rounded-full" 
+          />
+        )}
+      </motion.div>
+      {/* Center Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-secondary pointer-events-none z-[10000]"
+        className="fixed top-0 left-0 w-1 h-1 rounded-full bg-secondary pointer-events-none z-[10000]"
         style={{ 
           x: cursorX, 
           y: cursorY,
           translateX: "-50%",
           translateY: "-50%"
         }}
+        animate={{ scale: isHovering ? 0 : 1 }}
       />
     </>
   );
